@@ -16,6 +16,7 @@ struct ContentView: View {
     
     var body: some View {
         ZStack {
+            BackgroundView()
             VStack {
                 ScrollView(.vertical) {
                     VStack {
@@ -32,7 +33,7 @@ struct ContentView: View {
                     if showSearchWordMenu {
                         ZStack {
                             Rectangle()
-                                .foregroundColor(.white)
+                                .foregroundColor(Color("searchBar"))
                                 .opacity(0.8)
                                 .frame(height: 50)
                                 .cornerRadius(25)
@@ -62,11 +63,12 @@ struct ContentView: View {
                             Image(systemName: self.searchWord == "" ? "magnifyingglass.circle" : "arrow.2.circlepath.circle.fill")
                                 .resizable()
                                 .frame(width: 50, height: 50)
-                                .foregroundColor(.gray)
-                                .opacity(0.8)
+                                .foregroundColor(.white)
+                                .opacity(0.6)
                                 .shadow(radius: 2)
                         }.onTapGesture {
                             self.loadData()
+
                         }.onLongPressGesture {
                             self.showSearchWordMenu = true
                         }
@@ -79,6 +81,7 @@ struct ContentView: View {
     func loadData() {
         NetworkManager.networkRequest(searchWord) { data in
             DispatchQueue.main.async {
+                self.list = [List]()
                 self.list.append(contentsOf: data.list)
                 withAnimation {
                     self.showSearchWordMenu = false

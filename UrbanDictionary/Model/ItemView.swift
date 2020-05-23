@@ -26,6 +26,7 @@ struct ItemView: View {
                         }
                     }) {
                         Image(systemName: "arrow.turn.up.right")
+                            .foregroundColor(.white)
                     }
                 }
             }
