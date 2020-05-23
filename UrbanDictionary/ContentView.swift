@@ -9,10 +9,49 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var list = [List]()
+    
     var body: some View {
-        Text("Hello, World!")
+        ZStack {
+            VStack {
+                ScrollView(.vertical) {
+                    VStack {
+                        ForEach(self.list, id: \.id) { row in
+                            ItemView(item: row)
+                        }
+                        Divider()
+                    }
+                }
+            }
+            VStack {
+                Spacer()
+                HStack {
+                    Spacer()
+                    Button(action: {
+                        self.load()
+                    }) {
+                        Image(systemName: "arrow.2.circlepath.circle.fill")
+                            .resizable()
+                            .frame(width: 50, height: 50)
+                            .foregroundColor(.gray)
+                            .opacity(0.6)
+                            .shadow(radius: 2)
+                    }
+                }
+            }.padding()
+        }
+    }
+    
+    func load() {
+        NetworkManager.networkRequest { data in
+            DispatchQueue.main.async {
+                self.list.append(contentsOf: data.list)
+            }
+        }
     }
 }
+
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
