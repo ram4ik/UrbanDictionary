@@ -10,7 +10,8 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var list = [List]()
-    @State private var searchWord = ""
+    @State private var searchWord: String = ""
+    @State private var value: CGFloat = 0
     
     var body: some View {
         ZStack {
@@ -24,25 +25,44 @@ struct ContentView: View {
                     }
                 }
             }
-            VStack {
+            VStack(alignment: .trailing) {
                 Spacer()
                 ZStack {
-                    Rectangle()
-                        .foregroundColor(.white)
-                        .opacity(0.6)
-                        .frame(height: 50)
-                        .cornerRadius(25)
-                        .shadow(radius: 2)
+                    ZStack {
+                        Rectangle()
+                            .foregroundColor(.white)
+                            .opacity(0.8)
+                            .frame(height: 50)
+                            .cornerRadius(25)
+                            .shadow(radius: 2)
+                        
+                        TextField("Search...", text: $searchWord)
+                            .padding(.horizontal, 40)
+                    }.offset(y: -self.value)
+                    .animation(.spring())
+                    .onAppear() {
+                        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { (noti) in
+                            let value = noti.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as! CGRect
+                            let height = value.height
+
+                            self.value = height
+                        }
+                        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { (noti) in
+
+                            self.value = 0
+                        }
+                    }
+                    
                     HStack {
                         Spacer()
                         Button(action: {
-                            self.load()
+                            self.loadData()
                         }) {
                             Image(systemName: self.searchWord == "" ? "magnifyingglass.circle" : "arrow.2.circlepath.circle.fill")
                                 .resizable()
                                 .frame(width: 50, height: 50)
                                 .foregroundColor(.gray)
-                                .opacity(0.6)
+                                .opacity(0.8)
                                 .shadow(radius: 2)
                         }
                     }
@@ -51,16 +71,14 @@ struct ContentView: View {
         }
     }
     
-    func load() {
-        NetworkManager.networkRequest { data in
+    func loadData() {
+        NetworkManager.networkRequest(searchWord) { data in
             DispatchQueue.main.async {
                 self.list.append(contentsOf: data.list)
             }
         }
     }
 }
-
-
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {

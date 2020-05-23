@@ -10,14 +10,14 @@ import Foundation
 
 class NetworkManager {
     
-    static func networkRequest(_ searchWord: String? = nil, completionHandlerAfter: @escaping(AllItems) -> Void) {
+    static func networkRequest(_ searchWord: String = "search", completionHandlerAfter: @escaping(AllItems) -> Void) {
         
         let headers = [
             "x-rapidapi-host": "mashape-community-urban-dictionary.p.rapidapi.com",
             "x-rapidapi-key": "2029723d72msha38e93b72627b63p19f422jsn2dd3b46d1d90"
         ]
 
-        let request = NSMutableURLRequest(url: NSURL(string: "https://mashape-community-urban-dictionary.p.rapidapi.com/define?term=cat")! as URL,
+        let request = NSMutableURLRequest(url: NSURL(string: "https://mashape-community-urban-dictionary.p.rapidapi.com/define?term=\(searchWord)")! as URL,
                                                 cachePolicy: .useProtocolCachePolicy,
                                             timeoutInterval: 10.0)
         request.httpMethod = "GET"
