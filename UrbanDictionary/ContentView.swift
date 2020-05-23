@@ -26,17 +26,25 @@ struct ContentView: View {
             }
             VStack {
                 Spacer()
-                HStack {
-                    Spacer()
-                    Button(action: {
-                        self.load()
-                    }) {
-                        Image(systemName: self.searchWord == "" ? "magnifyingglass.circle" : "arrow.2.circlepath.circle.fill")
-                            .resizable()
-                            .frame(width: 50, height: 50)
-                            .foregroundColor(.gray)
-                            .opacity(0.6)
-                            .shadow(radius: 2)
+                ZStack {
+                    Rectangle()
+                        .foregroundColor(.white)
+                        .opacity(0.6)
+                        .frame(height: 50)
+                        .cornerRadius(25)
+                        .shadow(radius: 2)
+                    HStack {
+                        Spacer()
+                        Button(action: {
+                            self.load()
+                        }) {
+                            Image(systemName: self.searchWord == "" ? "magnifyingglass.circle" : "arrow.2.circlepath.circle.fill")
+                                .resizable()
+                                .frame(width: 50, height: 50)
+                                .foregroundColor(.gray)
+                                .opacity(0.6)
+                                .shadow(radius: 2)
+                        }
                     }
                 }
             }.padding()
