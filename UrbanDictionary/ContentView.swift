@@ -10,6 +10,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var list = [List]()
+    @State private var searchWord = ""
     
     var body: some View {
         ZStack {
@@ -30,7 +31,7 @@ struct ContentView: View {
                     Button(action: {
                         self.load()
                     }) {
-                        Image(systemName: "arrow.2.circlepath.circle.fill")
+                        Image(systemName: self.searchWord == "" ? "magnifyingglass.circle" : "arrow.2.circlepath.circle.fill")
                             .resizable()
                             .frame(width: 50, height: 50)
                             .foregroundColor(.gray)

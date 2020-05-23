@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import SafariServices
 
 struct ItemView: View {
     @State var item: List
@@ -14,16 +15,25 @@ struct ItemView: View {
     var body: some View {
         VStack {
             HStack {
-                Text("\(item.word ?? "n/a")")
+                Text("\(item.word?.capitalized ?? "n/a")")
                     .bold()
                     .padding(.vertical)
                 Spacer()
+                if item.permalink != "" {
+                    Button(action: {
+                        if let url = URL(string: self.item.permalink ?? "") {
+                            UIApplication.shared.open(url)
+                        }
+                    }) {
+                        Image(systemName: "arrow.turn.up.right")
+                    }
+                }
             }
-            Text("\(item.definition ?? "n/a")")
+            Text("  \(item.definition?.capitalized ?? "n/a")")
                 
             HStack {
                 Spacer()
-                Text("\(item.author ?? "n/a")")
+                Text("by \(item.author ?? "n/a")")
                     .font(.footnote)
             }
             HStack {
