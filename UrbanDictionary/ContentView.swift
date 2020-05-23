@@ -58,15 +58,17 @@ struct ContentView: View {
                     
                     HStack {
                         Spacer()
-                        Button(action: {
-                            self.loadData()
-                        }) {
+                        VStack {
                             Image(systemName: self.searchWord == "" ? "magnifyingglass.circle" : "arrow.2.circlepath.circle.fill")
                                 .resizable()
                                 .frame(width: 50, height: 50)
                                 .foregroundColor(.gray)
                                 .opacity(0.8)
                                 .shadow(radius: 2)
+                        }.onTapGesture {
+                            self.loadData()
+                        }.onLongPressGesture {
+                            self.showSearchWordMenu = true
                         }
                     }
                 }
@@ -78,6 +80,9 @@ struct ContentView: View {
         NetworkManager.networkRequest(searchWord) { data in
             DispatchQueue.main.async {
                 self.list.append(contentsOf: data.list)
+                withAnimation {
+                    self.showSearchWordMenu = false
+                }
             }
         }
     }
