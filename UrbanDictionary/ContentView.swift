@@ -11,6 +11,7 @@ import SwiftUI
 struct ContentView: View {
     @State private var list = [List]()
     @State private var searchWord: String = ""
+    @State private var showSearchWordMenu = true
     @State private var value: CGFloat = 0
     
     var body: some View {
@@ -28,28 +29,30 @@ struct ContentView: View {
             VStack(alignment: .trailing) {
                 Spacer()
                 ZStack {
-                    ZStack {
-                        Rectangle()
-                            .foregroundColor(.white)
-                            .opacity(0.8)
-                            .frame(height: 50)
-                            .cornerRadius(25)
-                            .shadow(radius: 2)
-                        
-                        TextField("Search...", text: $searchWord)
-                            .padding(.horizontal, 40)
-                    }.offset(y: -self.value)
-                    .animation(.spring())
-                    .onAppear() {
-                        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { (noti) in
-                            let value = noti.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as! CGRect
-                            let height = value.height
+                    if showSearchWordMenu {
+                        ZStack {
+                            Rectangle()
+                                .foregroundColor(.white)
+                                .opacity(0.8)
+                                .frame(height: 50)
+                                .cornerRadius(25)
+                                .shadow(radius: 2)
+                            
+                            TextField("Search...", text: $searchWord)
+                                .padding(.horizontal, 40)
+                        }.offset(y: -self.value)
+                        .animation(.spring())
+                        .onAppear() {
+                            NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { (noti) in
+                                let value = noti.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as! CGRect
+                                let height = value.height
 
-                            self.value = height
-                        }
-                        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { (noti) in
+                                self.value = height
+                            }
+                            NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { (noti) in
 
-                            self.value = 0
+                                self.value = 0
+                            }
                         }
                     }
                     
