@@ -40,6 +40,7 @@ struct ContentView: View {
                                 .shadow(radius: 2)
                             
                             TextField("Search...", text: $searchWord)
+                                .accessibility(label: Text("searchField"))
                                 .padding(.horizontal, 40)
                         }.offset(y: -self.value)
                         .animation(.spring())
@@ -71,7 +72,7 @@ struct ContentView: View {
 
                         }.onLongPressGesture {
                             self.showSearchWordMenu = true
-                        }
+                        }.accessibility(label: Text("searchButton"))
                     }
                 }
             }.padding()
