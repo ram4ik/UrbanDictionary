@@ -72,7 +72,8 @@ struct ContentView: View {
 
                         }.onLongPressGesture {
                             self.showSearchWordMenu = true
-                        }.accessibility(label: Text("searchButton"))
+                        }
+                        .accessibility(label: Text("searchButton"))
                     }
                 }
             }.padding()
