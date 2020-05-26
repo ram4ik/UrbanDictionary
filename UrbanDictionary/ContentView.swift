@@ -40,6 +40,7 @@ struct ContentView: View {
                                 .shadow(radius: 2)
                             
                             TextField("Search...", text: $searchWord)
+                                .keyboardType(.alphabet)
                                 .accessibility(label: Text("searchField"))
                                 .padding(.horizontal, 40)
                         }.offset(y: -self.value)
